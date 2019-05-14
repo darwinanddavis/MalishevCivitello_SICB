@@ -593,7 +593,7 @@ for(g in 1:length(global_sim_plot)){
       theme(legend.position="none")
     } 
 }
-do.call(grid.arrange,gspl) # plot in one window    
+do.call(grid.arrange,gspl[1:8]) # plot in one window    
 gspl[1] # plot individual outputs
 global_output_fh
 
