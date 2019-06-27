@@ -10,7 +10,8 @@
 
 ## Overview    
 
-doi: [DOI](https://zenodo.org/badge/96968871.svg)](DOI)    
+[![DOI](https://zenodo.org/badge/186671798.svg)](https://zenodo.org/badge/latestdoi/186671798)  
+:link: [Malishev M & Civitello DJ (2019) Linking Bioenergetics and Parasite Transmission Models Suggests Mismatch Between Snail Host Density and Production of Human Schistosomes, Integrative and Comparative Biology, icz058, doi:10.1093/icb/icz058.](https://academic.oup.com/icb/advance-article/doi/10.1093/icb/icz058/5497795)   
 
 Versions:  
  - R 3.5.0  
