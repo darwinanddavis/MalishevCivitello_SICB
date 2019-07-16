@@ -1,15 +1,5 @@
 <img src="https://raw.githubusercontent.com/darwinanddavis/MalishevCivitello_SICB/master/header.jpg" alt=" " width=1000 height=500>  
-
-# Linking bioenergetics and parasite transmission models suggests mismatch between snail host density and production of human schistosomes  
-
-## Matthew Malishev<sup>1*</sup> & David J Civitello<sup>1</sup>   
-
-### _<sup>1</sup> Department of Biology, Emory University, 1510 Clifton Road NE, Atlanta, GA, USA, 30322_    
-
-#### *Corresponding author: matthew.malishev [at] gmail.com     
-
-## Overview    
-
+  
 [![DOI](https://zenodo.org/badge/186671798.svg)](https://zenodo.org/badge/latestdoi/186671798)  
 :link: [Malishev M & Civitello DJ (2019) Linking Bioenergetics and Parasite Transmission Models Suggests Mismatch Between Snail Host Density and Production of Human Schistosomes, Integrative and Comparative Biology, icz058, doi:10.1093/icb/icz058.](https://academic.oup.com/icb/advance-article/doi/10.1093/icb/icz058/5497795)   
 
