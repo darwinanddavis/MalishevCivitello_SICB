@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/darwinanddavis/MalishevCivitello_SICB/master/header.png" alt=" " width=1000 height=600>  
+<img src="https://raw.githubusercontent.com/darwinanddavis/MalishevCivitello_SICB/master/header.jpg" alt=" " width=1000 height=600>  
 
 # Linking bioenergetics and parasite transmission models suggests mismatch between snail host density and production of human schistosomes  
 
