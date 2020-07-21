@@ -1,0 +1,384 @@
+---
+title: Appendix for Malishev, M & Civitello, DJ Linking bioenergetics and parasite transmission models suggests mismatch between snail host density and production of human schistosomes  
+#bibliography:/Users/malishev/Documents/Melbourne Uni/Thesis_2016/library.bib
+fontsize: 10
+geometry: margin=1in
+documentclass: article
+linkcolor: blue
+urlcolor: blue
+citecolor: red
+output:
+  pdf_document:
+    includes:
+      in_header: # add .tex file with header content
+    highlight: tango
+    template: null
+    toc: no
+    toc_depth: 4
+    number_sections: false
+    fig_width: 4
+    fig_height: 5
+    fig_caption: true
+    df_print: tibble 
+    # citation_package: biblatex # natbib
+    latex_engine: xelatex #pdflatex # lualatex
+    keep_tex: true # keep .tex file in dir 
+  sansfont: Times New Roman
+  word_document:
+    highlight: tango
+    keep_md: no
+    pandoc_args: --smart
+    #reference: mystyles.docx
+    toc: yes
+  html_document:
+    highlight: tango
+    code_folding: hide
+    toc: no
+    toc_depth: 4
+    number_sections: no
+    toc_float: yes
+inludes:
+  before_body: before_body.tex
+subtitle: 
+tags:
+- nothing
+- nothingness
+params: 
+  dir: "/Users/malishev/Documents/Emory/research/schisto_ibm/DEB_IBM"
+  date: !r Sys.Date()
+  session: !r sessionInfo()  
+  version: !r getRversion()
+  email: "matthew.malishev@gmail.com"
+  doi: https://github.com/darwinanddavis/MalishevCivitelloSICB
+classoption: portrait
+# ^['https://github.com/darwinanddavis/UsefulCode'] # footnote
+vignette: >
+  %\VignetteIndexEntry{Useful R code}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ TeX: { equationNumbers: {autoNumber: "all"} } });
+</script>
+
+```{r echo = FALSE}
+# library(rmarkdown)
+# setwd("")
+# f <- list.files()[1]
+# render(f, output_format='pdf_document')
+```
+
+## Model construction
+
+We built an individual-based disease transmission and dynamic energy budget model for schistosomiasis infection (SIDEB) of a size-structured *Biomphalaria glabrata* host population and its human infectious parasite *Schistosoma mansoni*. The SIDEB model is informed by two sub models: a complete dynamic energy and mass budget (DEB) model for *B. glabrata*, including energy and mass compartments for *S. mansoni* parasite biomass and a disease transmission model.  
+
+\  
+\  
+   
+Table A1. Key dynamic energy budget state variables for individual hosts and within-host parasite biomass (bold). Equations refer to the equation numbers listed under 'Dynamic energy budget for _B. glabrata_'. Dimensions and units: ---, dimensionless; C, carbon; d, day; L, length; mg, milligrams; mm, millimeters.      
+
+| Parameter | Definition | Dimension<br/>(unit) | Equation |     
+| :---: | :--- | :---: | :--- |    
+| _L_ | structural length | _mm_ | Eq. 2 |        
+| _e_ | scaled reserve density | --- | Eq. 3 |    
+| _D_ | host development | _mg C_ | Eq. 4 |      
+| $R_H$ | energy in reproduction buffer| _mg C_ | Eq. 5 |    
+| _$\delta$_ | damage density (infection and starvation costs) | $d^{-1}$ | Eq. 8 |      
+| _H_ | starvation-related hazard rate | $d^{-1}$ | Eq. 9 |    
+| $L_{G}$ |  shell length | _L (mm)_ | --- |  
+| age |  age of egg (hatches at 10 days) | $d$ | --- |    
+| **_P_** |  **parasite biomass** | **_mg C_** | **Eq. 6** |      
+| **$R_P$** |  **energy in parasite reproduction** | **_mg C_** | **Eq. 7** |
+
+\  
+\  
+
+Table A2. Definitions of model state variables for the simulation model environment. Dimensions and units: #, number; C, carbon; g, grams; L, liter; mg, milligrams.        
+
+| Parameter | Definition | Dimension<br/>(unit) |      
+| :---: | :--- | :---: |    
+| $F_a$ | algae resource density | _mg C_ $L^{-1} d^{-1}$ |    
+| $F_d$ | detritus resource density | _mg_ _C_ $L^{-1} d^{-1}$ |      
+| $M$ | total number of miracidia | _#_ $L^{-1}$ |  
+| $C$ | cercarial density | _# 0.1_ $L^{-1}$ |  
+| $G$ | total number of host eggs | _#_ $L^{-1}$ |  
+
+\  
+\  
+
+### Dynamic energy budget sub-model for *B. glabrata*.      
+
+We outline the energy and mass budget equations for the dynamic energy and mass budget state variables for the intermediate snail host *Biomphalaria glabrata*. All equations are in [Civitello *et al.* (2018)](Civitello, D. J., Fatima, H. , Johnson, L. R., Nisbet, R. M., Rohr, J. R. and Ben‐Ami, F. (2018), Bioenergetic theory predicts infection dynamics of human schistosomes in intermediate host snails across ecological gradients. Ecol Lett, 21: 692-701). Equation number in brackets refers to the equation references in Civitello *et al.* (2018).      
+  
+\   
+\  
+
+Resource, $F$, growth in the environment (Eq. 1)    
+
+\  
+\
+
+$$
+  \frac 
+    {d F}
+    {d t}
+    = -i_{M}L^{2}f_{H}
+$$
+
+\    
+\  
+   
+where $i_{M}$ is the maximum ingestion rate per individual host, $L$ is host length ($cm$), and $f_H$ is the host functional feeding response.    
+
+\    
+\  
+     
+Host body length, $L$ (growth) (Eq. 2)  
+
+\    
+\  
+     
+$$
+  \frac 
+    {d L}
+    {d t}
+    = \frac
+      {gY_{VE}}
+      {3\chi} 
+        \cdot \left( \frac 
+        {\kappa^{*} a_{M}e - (m_{V} + m_{R}E_{M}\delta)\chi L}
+        {e + g}
+        \right)
+$$
+
+\    
+\  
+   
+where $g$ is the energy investment ratio per unit of biomass $cm^{3}$, $Y_{VE}$ is yield of structure on host energy reserve, $\chi$ is the ratio of structural biomass to physical length (mg C mm$^{-3}$), $\kappa$ is the allocation of mobilized energy reserve $e$ to somatic maintenance $m_V$ and growth, $a_M$ is the maximum assimilation rate of food converted into energy, $m_R$ is maintenance of infected (damaged) biomass, $E_M$ is maximum reserve (per unit of structural biomass $V$), and $\delta$ is scaled damage density.    
+  
+\      
+\    
+     
+Scaled host energy reserve, $e$ (Eq. 3)  
+
+\    
+\  
+     
+$$
+  \frac 
+    {d e}
+    {d t}
+    = (f_{H} - e)
+    \frac
+      {a_{M}}
+      {\chi E_{M}L} - \frac
+        {P} 
+        {\chi L^{3}} 
+          \left(
+          \frac 
+          {i_{PM}f_{P}}
+          {E_{M}}
+          \right)
+$$
+
+\    
+\  
+   
+where $P$ is the within-host parasite biomass (growth of parasite), $i_{PM}$ is the maximum mass-specific within-host parasite ingestion rate, and $f_P$ is the parasite functional feeding response.  
+
+\    
+   
+The $\frac{P} {\chi L^{3}} \left(\frac {i_{PM}f_{P}}{E_{M}}\right)$ term equals the depleted energy reserve of infected hosts by parasites.     
+
+\    
+\  
+     
+Host development, $D$ (Eq. 4)  
+
+\    
+\  
+     
+$$
+  \frac
+  {d D}
+  {d t}
+  = \begin{cases}
+      \text{if} \ D < D_{R}, & (1 - \kappa^{*})C - m_{D}D \\
+      \text{if} \ D \geq D_{R}, & \text{min}[\ 0,\ (1 - \kappa^{*})C - m_{D}D\ ] \\
+    \end{cases}
+$$
+
+\    
+\  
+   
+where $D_R$ is the maturity threshold for host reproduction, $C$ is the rate of mobilized host reserve, and $m_D$ is the rate of host maturity maintenance.  
+  
+\  
+  
+The $\text{min}[\ 0,\ (1 - \kappa^{*})C - m_{D}D\ ] \\$ term allows the host to 'regress' back to a previous maturity stage when volume-specific reserve becomes too low under starvation conditions, i.e. the shrinking and regression starvation rule (Kooijman 2010).      
+
+\    
+\  
+   
+Host reproduction, $R_H$ (Eq. 5)    
+
+\    
+\  
+     
+$$
+  \frac
+  {d R_{H}}
+  {d t}
+  = \begin{cases}
+      \text{if} \ D < D_{R}, & 0 \\
+      \text{if} \ D \geq D_{R}, & (1 - \kappa^{*})C - m_{D}D
+    \end{cases}
+$$
+
+\    
+\  
+   
+Within-host parasite biomass, $P$ (growth) (Eq. 6)  
+
+\    
+\  
+     
+$$
+  \frac
+  {d P}
+  {d t}
+  = P(Y_{PE}i_{PM}f_{P} (1-r_{P}) -m_{P})
+$$
+
+\    
+\  
+   
+where $Y_{PE}$ is the yield of parasite biomass on host energy reserve, $r_P$ is the allocated parasite biomass assimilated to new parasite offspring (proportional to parasite biomass), and $m_P$ is the mass-specific rate of parasite maturity maintenance.     
+
+\    
+\  
+
+\newpage     
+Parasite reproduction, $R_P$ (Eq. 7)  
+
+\    
+\  
+     
+$$
+  \frac
+  {d R_{P}}
+  {d t}
+  = \gamma_{RP}Y_{PE}i_{PM}f_{P}r_{P}
+$$
+
+\    
+\  
+   
+where $\gamma_{RP}$ is the relative yield of parasite offspring biomass from assimilated parasite reserve.  
+
+\    
+\  
+   
+Host damage density, $\delta$ (Eq. 8)  
+
+\    
+\  
+     
+$$
+  \frac 
+    {d \delta}
+    {d t}
+    = \frac
+      {\Theta} 
+      {\chi L^{3}} 
+      \cdot \frac
+      {dR_{P}}
+      {dt}
+        + k_{R}(1-e)-k_{R}\delta-
+        \frac
+          {3\delta}
+          {L}
+          \cdot \frac 
+            {dL}
+            {dt}
+$$
+
+\    
+\  
+   
+where $\Theta$ is the intensity of parasite-induced damage to the host and $k_R$ is a constant for the rate of damage repair via reserve depletion. The $\frac {3\delta}{L}\cdot \frac {dL}{dt}$ term is host "dilution by growth": as the host adds new biomass, this reduces the damage density to its overall biomass.  
+
+\    
+\  
+   
+Cumulative hazard for host, $H$ (Eq. 9)  
+
+\    
+\  
+     
+$$
+  \frac
+  {d H}
+  {d t}
+  = h_{b}+h_{\delta} \cdot \text{max}(0, \ \delta - \delta_{0})
+$$
+
+\    
+\  
+   
+where $h_b$ is the background hazard rate, $h_{\delta}$ is the hazard coefficient, and $\delta_{0}$ is the linear function for damage density.    
+
+\    
+\  
+   
+Host survival probability (Eq. 10)  
+
+\    
+\  
+     
+$$
+P(\text{Survival})[t] = e^{-H(t)}
+$$
+  
+\newpage  
+
+## Simulation model code for the within-host DEB model, the between-host disease transmission model, and the individual-based simulation model    
+
+\  
+\  
+
+All model code is found at [https://github.com/darwinanddavis/MalishevCivitello_SICB](https://github.com/darwinanddavis/MalishevCivitello_SICB).    
+
+\  
+\  
+
+Required files  
+
+\  
+\ 
+
+```{shell, eval=F, echo=T}
+"DEB_IBM.R"
+"DEB_INF_GUTS_IBM.nlogo"
+"FullStarve_shrink_dilute_damage3.Rda"
+"IndividualModel_IBM3.c"
+"IndividualModel_IBM3.so" # Mac OSX. generated from C
+"IndividualModel_IBM3.o" # Mac OSX. generated from C  
+"IndividualModel_IBM.dll" # Windows. generated from C  
+```
+
+\  
+\  
+\newpage  
+
+## Bibliography  
+
+Civitello DJ, Rohr JR. 2014. Disentangling the effects of exposure and susceptibility on transmission of the zoonotic parasite Schistosoma mansoni. Journal of Animal Ecology 83(6):1379-1386.  
+
+Civitello DJ, Fatima H, Johnson LR, Nisbet RM, Rohr JR. 2018. Bioenergetic theory predicts infection dynamics of human schistosomes in intermediate host snails across ecological gradients. Ecology Letters 21(5):692-701.   
+  
+\  
+\  
+
+**End Appendix**  
